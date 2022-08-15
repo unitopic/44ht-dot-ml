@@ -4,9 +4,9 @@ app = Flask("44html's wildcard system")
 app.config["SERVER_NAME"] = "44ht.ml"
 home = "https://44html.sape.gq/"
 
-@app.route("/<root>")
+@app.route("/<path:root>")
 def root(root): return redirect(f"{home}{root}")
-@app.route("/<root>", subdomain="www")
+@app.route("/<path:root>", subdomain="www")
 def rootwww(): return root(root)
 @app.route("/")
 def main(): return redirect(home)
@@ -14,7 +14,7 @@ def main(): return redirect(home)
 def mainwww(): return home()
 
 
-@app.route("/<filename>", subdomain="<user>")
+@app.route("/<path:filename>", subdomain="<user>")
 def rooms(user, filename):
   c = requests.post(f"{home}~{user}/{filename}", data={"key": os.getenv("KEY")})
   r = make_response(c.text, c.status_code)
